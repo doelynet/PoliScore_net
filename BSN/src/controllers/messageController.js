@@ -173,22 +173,12 @@ exports.getOrCreateConversation = async (req, res) => {
         const sortedIds = [req.user.id, otherUserId].sort();
 
         // Try to find existing conversation (Postgres-compatible)
-        let conversation;
-        try {
-            conversation = await Conversation.findOne({
-                where: sequelize.literal(
-                    `"participantIds"::jsonb @> '${JSON.stringify(sortedIds)}'::jsonb`
-                )
-            });
-        } catch (_e) {
-            // MySQL fallback
-            conversation = await Conversation.findOne({
-                where: sequelize.where(
-                    sequelize.fn('JSON_CONTAINS', sequelize.col('participantIds'), JSON.stringify(sortedIds)),
-                    true
-                )
-            });
-        }
+        let conversation = await Conversation.findOne({
+            where: sequelize.where(
+                sequelize.cast(sequelize.col('participantIds'), 'jsonb'),
+                { [Op.contains]: sequelize.cast(JSON.stringify(sortedIds), 'jsonb') }
+            )
+        });
 
         if (!conversation) {
             conversation = await Conversation.create({
@@ -217,7 +207,6 @@ exports.getOrCreateConversation = async (req, res) => {
         res.status(500).json({ success: false, message: 'Server error', error: error.message });
     }
 };
-
 // @route   GET /api/messages/conversations/:conversationId
 // @desc    Get messages in a conversation (paginated)
 // @access  Private

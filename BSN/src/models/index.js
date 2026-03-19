@@ -92,7 +92,7 @@ BillVote.belongsTo(Bill, { foreignKey: 'billId', as: 'bill' });
 BillVote.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 Bill.hasMany(BillStage, { foreignKey: 'billId', as: 'stageHistory' });
 BillStage.belongsTo(Bill, { foreignKey: 'billId' });
-
+BillStage.belongsTo(User, { foreignKey: 'changedBy', as: 'changedByUser' }); 
 // ── Connection (self-referential User ↔ User) ──
 Connection.belongsTo(User, { foreignKey: 'requesterId', as: 'requester' });
 Connection.belongsTo(User, { foreignKey: 'addresseeId', as: 'addressee' });
@@ -108,7 +108,9 @@ User.hasMany(Message, { foreignKey: 'senderId', as: 'sentMessages' });
 // ── Report ↔ User ──
 Report.belongsTo(User, { foreignKey: 'reporterId', as: 'reporter' });
 Report.belongsTo(User, { foreignKey: 'resolvedBy', as: 'resolver' });
-
+//Bill -> Post 
+Post.belongsTo(Bill, { foreignKey: 'billId', as: 'linkedBill'});
+Bill.hasMany(Post, { foreignKey: 'billId', as: 'discussions'});
 // Sync tables
 const syncDatabase = async () => {
     try {
