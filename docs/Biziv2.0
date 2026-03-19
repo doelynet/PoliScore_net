@@ -1,0 +1,40 @@
+# Bizi v2.0 — Implementation Tracker
+
+## Phase 1: Security & Infrastructure Hardening
+- [ ] Install security packages (helmet, rate-limit, xss-clean, hpp)
+- [ ] Create `src/config/redis.js` — Redis client setup
+- [ ] Create `src/config/socket.js` — Socket.IO + JWT auth middleware
+- [ ] Update [server.js](file:///home/junya/Desktop/Bizi%20SN/BSN/src/server.js) — Wire security middleware + Socket.IO
+
+## Phase 2: Model Enhancements (v2.0 Fields)
+- [ ] User model — add `role`, `emailVerified`, password reset fields
+- [ ] Post model — add `postType`, `pollData`, `conferenceData`, `viewsCount`, `sharesCount`
+- [ ] Comment model — add `commentType`, `metadata`, `isQuestion`, `isAnswered`, `parentId`
+- [ ] Notification model — add new type values
+- [ ] Update [models/index.js](file:///home/junya/Desktop/Bizi%20SN/BSN/src/models/index.js) — new associations
+
+## Phase 3: Bill Tracking Module
+- [ ] Create `Bill.js` model + `BillFollow.js` model
+- [ ] Create `billController.js` — CRUD + search/filter + follow
+- [ ] Create `billRoutes.js`
+- [ ] Add `adminOnly` middleware
+- [ ] Add bill validators
+- [ ] Register in [server.js](file:///home/junya/Desktop/Bizi%20SN/BSN/src/server.js)
+
+## Phase 4: Voting & Polls
+- [ ] `BillVote.js` model + controller + routes
+- [ ] Poll controller + routes (via enhanced Post)
+
+## Phase 5: Messaging, Discussions & Connections
+- [ ] `Connection.js` model + controller + routes
+- [ ] Message controller + routes (via enhanced Comment)
+- [ ] Socket.IO real-time messaging
+
+## Phase 6: Conferences (Agora.io)
+- [ ] Conference controller + routes
+- [ ] Agora token utility
+- [ ] Socket.IO conference events
+
+## Phase 7: Admin Dashboard & Moderation
+- [ ] Admin controller + routes
+- [ ] Report controller + routes
