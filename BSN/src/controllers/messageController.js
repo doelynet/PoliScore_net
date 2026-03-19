@@ -82,7 +82,10 @@ exports._getConversationsPg = async (req, res) => {
         const offset = (page - 1) * limit;
 
         const { count, rows: conversations } = await Conversation.findAndCountAll({
-            where: sequelize.literal(`"participantIds"::jsonb @> '"${req.user.id}"'`),
+            where: sequelize.where(
+            sequelize.cast(sequelize.col('participantIds'), 'jsonb'),
+            { [Op.contains]: sequelize.cast(`["${req.user.id}"]`, 'jsonb') }
+        ),
             order: [['lastMessageAt', 'DESC']],
             limit,
             offset

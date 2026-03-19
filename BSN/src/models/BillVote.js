@@ -17,6 +17,11 @@ const BillVote = sequelize.define('BillVote', {
     allowNull: false,
     references: { model: 'bills', key: 'id' }
   },
+  comment: {
+  type: DataTypes.TEXT,
+  allowNull: true,
+  validate: { len: [0, 1000] }
+},
   vote: {
     type: DataTypes.ENUM('yes','no','abstain'),
     allowNull: false

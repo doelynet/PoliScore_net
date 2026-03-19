@@ -12,6 +12,7 @@ const Connection = require('./Connection');
 const Conversation = require('./Conversation');
 const Message = require('./Message');
 const Report = require('./Report');
+const BillStage = require('./BillStage');
 
 // ── User ↔ Post ──
 User.hasMany(Post, { foreignKey: 'userId', as: 'posts' });
@@ -89,6 +90,8 @@ User.belongsToMany(Bill, {
 Bill.hasMany(BillVote, { foreignKey: 'billId', as: 'votes' });
 BillVote.belongsTo(Bill, { foreignKey: 'billId', as: 'bill' });
 BillVote.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+Bill.hasMany(BillStage, { foreignKey: 'billId', as: 'stageHistory' });
+BillStage.belongsTo(Bill, { foreignKey: 'billId' });
 
 // ── Connection (self-referential User ↔ User) ──
 Connection.belongsTo(User, { foreignKey: 'requesterId', as: 'requester' });
@@ -126,6 +129,7 @@ module.exports = {
     Notification,
     Bill,
     BillFollow,
+    BillStage,
     BillVote,
     Connection,
     Conversation,

@@ -24,6 +24,11 @@ const Bill = sequelize.define('Bill', {
     type: DataTypes.STRING(255),
     allowNull: true
   },
+  summary: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    comment: 'Plain-language business impact summary'
+},
   category: {
     type: DataTypes.STRING(100),
     allowNull: true

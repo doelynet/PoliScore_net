@@ -59,6 +59,15 @@ const Post = sequelize.define('Post', {
             model:'users',
             key:'id'
         }
+    },
+    billId: {
+        type: DataTypes.UUID,
+        allowNull: true,
+        references: { model: 'bills', key: 'id' }
+    },
+    forumCategory: {
+        type: DataTypes.ENUM('general','taxation','trade','labor','investment','digital'),
+        allowNull: true
     }
 }, {
     timestamps: true,

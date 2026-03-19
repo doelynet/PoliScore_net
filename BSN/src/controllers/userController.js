@@ -17,7 +17,6 @@ exports.getUserProfile = async (req, res) => {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
 
-        // Get follower / following counts
         const followersCount = await Follow.count({ where: { followingId: user.id } });
         const followingCount = await Follow.count({ where: { followerId: user.id } });
         const postsCount = await Post.count({ where: { userId: user.id } });
@@ -45,7 +44,10 @@ exports.updateProfile = async (req, res) => {
             return res.status(400).json({ success: false, errors: errors.array() });
         }
 
-        const allowedFields = ['fullName', 'bio', 'profilePicture', 'coverPhoto', 'businessType', 'industry', 'website', 'location'];
+        const allowedFields = [
+            'fullName', 'bio', 'profilePicture', 'coverPhoto',
+            'businessType', 'industry', 'website', 'location'
+        ];
         const updates = {};
 
         allowedFields.forEach(field => {
@@ -120,6 +122,31 @@ exports.searchUsers = async (req, res) => {
         });
     } catch (error) {
         console.error('Error in searchUsers:', error);
+        res.status(500).json({ success: false, message: 'Server error', error: error.message });
+    }
+};
+
+// @route   DELETE /api/users/me
+// @desc    Delete own account and all associated data
+// @access  Private
+exports.deleteAccount = async (req, res) => {
+    const t = await sequelize.transaction();
+    try {
+        const user = await User.findByPk(req.user.id, { transaction: t });
+        if (!user) {
+            await t.rollback();
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+
+        // onDelete: 'CASCADE' on all FK constraints handles
+        // posts, comments, likes, follows, notifications, connections, messages
+        await user.destroy({ transaction: t });
+        await t.commit();
+
+        res.json({ success: true, message: 'Account deleted successfully' });
+    } catch (error) {
+        await t.rollback();
+        console.error('Error in deleteAccount:', error);
         res.status(500).json({ success: false, message: 'Server error', error: error.message });
     }
 };
