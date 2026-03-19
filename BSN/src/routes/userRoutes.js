@@ -8,9 +8,10 @@ const {
 } = require('../controllers/userController');
 const { protect } = require('../middleware/auth');
 const { updateProfileValidator } = require('../middleware/validator');
-
+const { myVotes } = require('../controllers/billVoteController'); 
 // ── Public ──
 router.get('/search', searchUsers);
+router.get('/me/votes', protect, myVotes); 
 router.get('/:username', getUserProfile);
 
 // ── Private ──

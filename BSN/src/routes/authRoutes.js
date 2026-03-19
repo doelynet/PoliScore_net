@@ -3,6 +3,7 @@ const router = express.Router();
 const { register, login, getMe, requestPasswordReset, resetPassword, requestEmailVerification, verifyEmail } = require('../controllers/authControllers');
 const { registerValidator, loginValidator } = require('../middleware/validator');
 const { protect } = require('../middleware/auth');
+const jwt = require('jsonwebtoken'); 
 
 router.post('/register', registerValidator, register);
 router.post('/login', loginValidator, login);
