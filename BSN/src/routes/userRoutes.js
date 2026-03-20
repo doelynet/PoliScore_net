@@ -17,5 +17,6 @@ router.get('/:username', getUserProfile);
 // ── Private ──
 router.put('/profile', protect, updateProfileValidator, updateProfile);
 router.delete('/me', protect, deleteAccount);
+router.get('/me/votes', protect, myVotes);
 
 module.exports = router;
