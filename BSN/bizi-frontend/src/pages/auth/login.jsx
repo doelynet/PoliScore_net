@@ -16,8 +16,14 @@ import { useAuthStore } from '../../store/authStore';
     const { mutate, isPending, error } = useMutation({
         mutationFn: login,
         onSuccess: (res) => {
-        setAuth(res.data.data.user, res.data.data.token);
-        navigate('/', { replace: true });
+            const{user,token}=res.data.data;
+            setAuth(user, token);
+            if (user.role === 'admin') {
+                navigate('/admin', { replace: true });
+            } else {
+                navigate('/', { replace: true });
+            }
+            //navigate(user.role === 'admin' ? '/admin' : '/', { replace: true }); --- IGNORE ---
         },
     });
     

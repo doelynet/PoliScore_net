@@ -7,7 +7,7 @@ export default function AdminRoute() {
     const token = useAuthStore(s => s.token);
     
     if (!token)                    return <Navigate to="/login" replace />;
-    if (user?.role !== 'admin')    return <Navigate to="/"      replace />;
+    if (user?.role !== 'admin')    return <Navigate to="/admin"      replace />;
     
     return <Outlet />;
     }
