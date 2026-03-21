@@ -16,7 +16,7 @@ import { useAuthStore } from '../../store/authStore';
     const { mutate, isPending, error } = useMutation({
         mutationFn: login,
         onSuccess: (res) => {
-        setAuth(res.data.user, res.data.token);
+        setAuth(res.data.data.user, res.data.data.token);
         navigate('/', { replace: true });
         },
     });

@@ -25,7 +25,7 @@ client.interceptors.request.use(config => {
 });
     //401 clears auth and redirects to login
 client.interceptors.response.use(
-  res => res.data,  // unwrap .data so callers get the payload directly
+  res => res,  // pass through successful responses
     err => {
     if (err.response?.status === 401) {
         localStorage.removeItem('bizi-auth');
