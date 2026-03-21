@@ -109,8 +109,8 @@ const ROLE_COLORS = {
 
     // Suspend mutation
     const suspendMutation = useMutation({
-        mutationFn: ({ userId, suspend }) => 
-        client.put(`/admin/users/${userId}/suspend`, { suspend }),
+        mutationFn: ({ userId}) => 
+        client.put(`/admin/users/${userId}/suspend`), //, { suspend })
         onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['admin-users'] });
         setSuspendConfirm(null);
