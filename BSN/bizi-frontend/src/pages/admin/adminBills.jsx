@@ -211,7 +211,7 @@ const CATEGORIES = [
         };
 
         if (editingBill) {
-        updateMutation.mutate({ id: editingBill._id, data: payload });
+        updateMutation.mutate({ id: editingBill.id, data: payload });
         } else {
         createMutation.mutate(payload);
         }
@@ -349,7 +349,7 @@ const CATEGORIES = [
                 ) : (
                     filteredBills.map((bill, index) => (
                     <tr 
-                        key={bill._id}
+                        key={bill.id}
                         className="transition-colors duration-150"
                         style={{ 
                         backgroundColor: index % 2 === 1 ? 'rgba(126, 200, 74, 0.03)' : 'transparent',
@@ -405,7 +405,7 @@ const CATEGORIES = [
                         <div className="flex items-center gap-1">
                             {/* View */}
                             <button
-                            onClick={() => navigate(`/bills/${bill._id}/stages`)}
+                            onClick={() => navigate(`/bills/${bill.id}/stages`)}
                             className="p-2 rounded-lg transition-colors duration-150"
                             style={{ color: '#6a8a5a' }}
                             onMouseEnter={(e) => {
@@ -445,7 +445,7 @@ const CATEGORIES = [
                             {/* Stage dropdown */}
                             <select
                             value={bill.status}
-                            onChange={(e) => statusMutation.mutate({ id: bill._id, status: e.target.value })}
+                            onChange={(e) => statusMutation.mutate({ id: bill.id, status: e.target.value })}
                             className="p-1.5 rounded text-xs cursor-pointer outline-none"
                             style={{ 
                                 backgroundColor: 'transparent',
@@ -462,7 +462,7 @@ const CATEGORIES = [
                             </select>
                             {/* Delete */}
                             <button
-                            onClick={() => setDeleteConfirm(bill._id)}
+                            onClick={() => setDeleteConfirm(bill.id)}
                             className="p-2 rounded-lg transition-colors duration-150"
                             style={{ color: '#6a8a5a' }}
                             onMouseEnter={(e) => {

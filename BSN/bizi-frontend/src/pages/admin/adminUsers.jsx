@@ -131,17 +131,17 @@ const ROLE_COLORS = {
 
     // Handle role change
     const handleRoleChange = (userId, newRole) => {
-        if (userId === currentUser?._id) return; // Can't change own role
+        if (userId === currentUser?.id) return; // Can't change own role
         roleMutation.mutate({ userId, role: newRole });
     };
 
     // Handle suspend
     const handleSuspend = (user) => {
-        if (user._id === currentUser?._id) return; // Can't suspend self
+        if (user.id === currentUser?.id) return; // Can't suspend self
         if (user.role === 'admin') return; // Can't suspend admins
         
         suspendMutation.mutate({ 
-        userId: user._id, 
+        userId: user.id, 
         suspend: user.isVerified // If verified, suspend; if suspended, reinstate
         });
     };
@@ -262,13 +262,13 @@ const ROLE_COLORS = {
                     </tr>
                 ) : (
                     filteredUsers.map((user, index) => {
-                    const isCurrentUser = user._id === currentUser?._id;
+                    const isCurrentUser = user.id === currentUser?.id;
                     const isAdmin = user.role === 'admin';
                     const isSuspended = !user.isVerified;
                     
                     return (
                         <tr 
-                        key={user._id}
+                        key={user.id}
                         className="transition-colors duration-150"
                         style={{ 
                             backgroundColor: index % 2 === 1 ? 'rgba(126, 200, 74, 0.03)' : 'transparent',
@@ -344,7 +344,7 @@ const ROLE_COLORS = {
                             {/* Role dropdown */}
                             <select
                                 value={user.role}
-                                onChange={(e) => handleRoleChange(user._id, e.target.value)}
+                                onChange={(e) => handleRoleChange(user.id, e.target.value)}
                                 disabled={isCurrentUser}
                                 className="px-2 py-1.5 rounded text-xs cursor-pointer outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                                 style={{ 
