@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Serif+Display&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
