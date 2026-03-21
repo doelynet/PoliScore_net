@@ -8,6 +8,7 @@ import ProtectedRoute from './components/protectedRoute';
 import AdminRoute     from './components/adminRoute';
 
 // Lazy load every page — only downloads when the user navigates to it
+const LandingPage = lazy(() => import('./pages/landing/landingPage'));
 const Login            = lazy(() => import('./pages/auth/login'));
 const Register         = lazy(() => import('./pages/auth/register'));
 const ResetPassword    = lazy(() => import('./pages/auth/resetPassword'));
@@ -42,6 +43,11 @@ const PageLoader = () => (
 
 const router = createBrowserRouter([
   // ── Public auth pages ──
+  //Landing Page
+    {
+    path: '/',
+    element: <LandingPage />,
+    },
     {
     element: <AuthLayout />,
     children: [
