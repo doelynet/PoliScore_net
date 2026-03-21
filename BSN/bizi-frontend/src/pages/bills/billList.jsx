@@ -408,7 +408,8 @@ import { getBills } from '../../api/bills.api';
         }),
     });
 
-    const bills = data?.data?.bills || data?.data || [];
+    const rawBills = data?.data?.bills ?? data?.data ?? data ?? [];
+    const bills = Array.isArray(rawBills) ? rawBills : [];;
     
     // Sort bills
     const sortedBills = [...bills].sort((a, b) => {

@@ -1,6 +1,6 @@
 // src/layouts/mainLayout.jsx  — add ThemeToggle to sidebar footer
 
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate, Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuthStore }        from '../store/authStore';
 import { useNotificationStore } from '../store/notificationStore';
@@ -43,7 +43,14 @@ const navItems = [
         <aside className="w-56 bg-[var(--bg-sidebar)] border-r border-[var(--border-muted)] flex flex-col fixed h-full z-10">
             {/* Logo */}
             <div className="px-5 py-5 border-b border-[var(--border-muted)]">
-            <span className="text-xl font-bold text-[var(--brand)]">Bizi</span>
+            <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{
+                            fontFamily: "'DM Serif Display', serif",
+                            fontSize: 30,
+                            color: 'var(--brand)',
+                            letterSpacing: -0.5,
+            }}>Bizi</span>
+</Link>
             </div>
 
             {/* Nav links */}
