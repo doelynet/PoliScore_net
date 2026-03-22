@@ -8,7 +8,6 @@ export default function AdminRoute() {
     
     if (!token)                    return <Navigate to="/login" replace />;
     if (user?.role !== 'admin')    return <Navigate to="/"      replace />;
-    
     return <Outlet />;
     }
     

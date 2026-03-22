@@ -18,12 +18,8 @@ import { useAuthStore } from '../../store/authStore';
         onSuccess: (res) => {
             const{user,token}=res.data.data;
             setAuth(user, token);
-            if (user.role === 'admin') {
-                navigate('/admin', { replace: true });
-            } else {
-                navigate('/', { replace: true });
-            }
-            //navigate(user.role === 'admin' ? '/admin' : '/', { replace: true }); --- IGNORE ---
+
+            navigate(user.role === 'admin' ? '/admin' : '/', { replace: true });
         },
     });
     
