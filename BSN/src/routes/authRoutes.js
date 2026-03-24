@@ -4,7 +4,7 @@ const { register, login, getMe, requestPasswordReset, resetPassword, requestEmai
 const { registerValidator, loginValidator } = require('../middleware/validator');
 const { protect } = require('../middleware/auth');
 const jwt = require('jsonwebtoken'); 
-
+const { myVotes } = require('../controllers/billVoteController');
 router.post('/register', registerValidator, register);
 router.post('/login', loginValidator, login);
 //private route to get user profile, requires authentication
@@ -13,6 +13,7 @@ router.get('/me', protect, getMe);
 router.post('/request-password-reset', requestPasswordReset);
 router.post('/reset-password', resetPassword);
 router.post('/request-email-verification', requestEmailVerification);
+router.get('/me/votes', protect, myVotes);   
 router.get('/verify-email', verifyEmail);
 router.post('/refresh', protect, (req, res) => {
     const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '30m' });

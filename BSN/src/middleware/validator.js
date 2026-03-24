@@ -86,7 +86,16 @@ exports.updateProfileValidator = [
         .optional()
         .trim()
         .isLength({ max: 100 })
-        .withMessage('Location must be at most 100 characters')
+        .withMessage('Location must be at most 100 characters'),
+        body('party')
+            .optional()
+            .trim()
+            .isLength({ max: 100 })
+            .withMessage('Party/Community must be at most 100 characters'),
+        body('partyVisibility')
+            .optional()
+            .isIn(['public', 'private'])
+            .withMessage('Visibility must be public or private')
 ];
 
 exports.messageValidator = [

@@ -84,6 +84,15 @@ const User = sequelize.define('User', {
     location: {
         type: DataTypes.STRING(100),
         allowNull: true
+    },
+    party: {
+    type: DataTypes.STRING(100),
+    allowNull: true,
+    },
+    partyVisibility: {
+    type: DataTypes.ENUM('public', 'private'),
+    allowNull: false,
+    defaultValue: 'private'
     }
 }, {
     timestamps: true,

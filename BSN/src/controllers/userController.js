@@ -21,10 +21,23 @@ exports.getUserProfile = async (req, res) => {
         const followingCount = await Follow.count({ where: { followerId: user.id } });
         const postsCount = await Post.count({ where: { userId: user.id } });
 
+        const isOwner = req.user && req.user.id === user.id;
+        const profileData = isOwner
+            ? user.toJSON()
+            : {
+                id: user.id, username: user.username, fullName: user.fullName,
+                bio: user.bio, profilePicture: user.profilePicture, coverPhoto: user.coverPhoto,
+                businessType: user.businessType, industry: user.industry,
+                website: user.website, location: user.location,
+                isVerified: user.isVerified, role: user.role, createdAt: user.createdAt,
+                party: user.partyVisibility === 'public' ? user.party : undefined,
+                partyVisibility: user.partyVisibility === 'public' ? 'public' : undefined,
+            };
+
         res.json({
             success: true,
             data: {
-                user,
+                user: profileData,
                 stats: { followersCount, followingCount, postsCount }
             }
         });
@@ -46,7 +59,7 @@ exports.updateProfile = async (req, res) => {
 
         const allowedFields = [
             'fullName', 'bio', 'profilePicture', 'coverPhoto',
-            'businessType', 'industry', 'website', 'location'
+            'businessType', 'industry', 'website', 'location', 'party', 'partyVisibility'
         ];
         const updates = {};
 
@@ -92,13 +105,8 @@ exports.searchUsers = async (req, res) => {
             ];
         }
 
-        if (businessType) {
-            where.businessType = businessType;
-        }
-
-        if (industry) {
-            where.industry = { [Op.iLike]: `%${industry}%` };
-        }
+        if (businessType) where.businessType = businessType;
+        if (industry) where.industry = { [Op.iLike]: `%${industry}%` };
 
         const { count, rows: users } = await User.findAndCountAll({
             where,
@@ -138,8 +146,6 @@ exports.deleteAccount = async (req, res) => {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
 
-        // onDelete: 'CASCADE' on all FK constraints handles
-        // posts, comments, likes, follows, notifications, connections, messages
         await user.destroy({ transaction: t });
         await t.commit();
 
@@ -149,4 +155,17 @@ exports.deleteAccount = async (req, res) => {
         console.error('Error in deleteAccount:', error);
         res.status(500).json({ success: false, message: 'Server error', error: error.message });
     }
+};
+
+exports.optionalAuth = async (req, res, next) => {
+    try {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (token) {
+            const jwt = require('jsonwebtoken');
+            const { User } = require('../models');
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = await User.findByPk(decoded.id, { attributes: { exclude: ['passwordHash'] } });
+        }
+    } catch (_) {}
+    next();
 };

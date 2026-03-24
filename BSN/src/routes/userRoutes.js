@@ -1,21 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {
-    getUserProfile,
-    updateProfile,
-    searchUsers,
-    deleteAccount
-} = require('../controllers/userController');
+const { updateProfile ,deleteAccount} = require('../controllers/userController');
 const { protect } = require('../middleware/auth');
 const { updateProfileValidator } = require('../middleware/validator');
 const { myVotes } = require('../controllers/billVoteController'); 
-// ── Public ──
-router.get('/search', searchUsers);
-router.get('/me/votes', protect, myVotes); 
-router.get('/:username', getUserProfile);
 
-// ── Private ──
-router.put('/profile', protect, updateProfileValidator, updateProfile);
+router.put('/profile', protect, ...updateProfileValidator, updateProfile);
 router.delete('/me', protect, deleteAccount);
 router.get('/me/votes', protect, myVotes);
 
